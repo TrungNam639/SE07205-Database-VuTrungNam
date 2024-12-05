@@ -1,0 +1,68 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1A5E47C2-6D28-42B3-A05B-9F106B6C2A1E}|WindowsFormsApp1\\WindowsFormsApp1.csproj|C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\windowsformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{1A5E47C2-6D28-42B3-A05B-9F106B6C2A1E}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A5E47C2-6D28-42B3-A05B-9F106B6C2A1E}|WindowsFormsApp1\\WindowsFormsApp1.csproj|c:\\asm\\se07205-db\\vd\\windowsformsapp1\\windowsformsapp1\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{1A5E47C2-6D28-42B3-A05B-9F106B6C2A1E}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A5E47C2-6D28-42B3-A05B-9F106B6C2A1E}|WindowsFormsApp1\\WindowsFormsApp1.csproj|c:\\asm\\se07205-db\\vd\\windowsformsapp1\\windowsformsapp1\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{1A5E47C2-6D28-42B3-A05B-9F106B6C2A1E}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "menu.cs [Design]",
+              "DocumentMoniker": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\WindowsFormsApp1\\menu.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\menu.cs",
+              "ToolTip": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\WindowsFormsApp1\\menu.cs [Design]",
+              "RelativeToolTip": "WindowsFormsApp1\\menu.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-05T10:34:28.325Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Mainform.cs [Design]",
+              "DocumentMoniker": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\WindowsFormsApp1\\Mainform.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\Mainform.cs",
+              "ToolTip": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\WindowsFormsApp1\\Mainform.cs [Design]",
+              "RelativeToolTip": "WindowsFormsApp1\\Mainform.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-05T10:34:23.934Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\WindowsFormsApp1\\Form1.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\Form1.cs",
+              "ToolTip": "C:\\ASM\\SE07205-db\\vd\\WindowsFormsApp1\\WindowsFormsApp1\\Form1.cs [Design]",
+              "RelativeToolTip": "WindowsFormsApp1\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-14T09:50:06.627Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
