@@ -110,11 +110,11 @@
     <Compile Include="PurchaseHistory.Designer.cs">
       <DependentUpon>PurchaseHistory.cs</DependentUpon>
     </Compile>
-    <Compile Include="SaleForm.cs">
+    <Compile Include="Saleform.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SaleForm.Designer.cs">
-      <DependentUpon>SaleForm.cs</DependentUpon>
+    <Compile Include="Saleform.Designer.cs">
+      <DependentUpon>Saleform.cs</DependentUpon>
     </Compile>
     <Compile Include="UpdateCustomer.cs">
       <SubType>Form</SubType>
@@ -186,8 +186,8 @@
     <EmbeddedResource Include="PurchaseHistory.resx">
       <DependentUpon>PurchaseHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SaleForm.resx">
-      <DependentUpon>SaleForm.cs</DependentUpon>
+    <EmbeddedResource Include="Saleform.resx">
+      <DependentUpon>Saleform.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdateCustomer.resx">
       <DependentUpon>UpdateCustomer.cs</DependentUpon>

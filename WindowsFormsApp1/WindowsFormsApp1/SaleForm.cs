@@ -11,102 +11,140 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class SaleForm : Form
+    public partial class Saleform : Form
     {
-        public SaleForm()
+        public Saleform()
         {
             InitializeComponent();
-            
-            // Maximize the form to fill the screen
             this.WindowState = FormWindowState.Maximized;
+            /*this.Width = Screen.PrimaryScreen.WorkingArea.Width;
+            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(0, 0);*/
 
-            // Center the form on the screen
+            // set the form border style to ensure it has a standard window look
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+
+            // optionally, set startposition to centerscreen if you want centered loading
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            // Disable resizing (Fixed size)
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-
-            // Optional: Disable the maximize button as well if you don't want the user to maximize it
-            this.MaximizeBox = false;
         }
 
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-
+            AddProductForm main = new AddProductForm();
+            main.ShowDialog();
         }
 
-        private void buttonBack_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Ẩn SaleForm
-            Form1 loginForm = new Form1(); // Tạo đối tượng LoginForm
-            loginForm.Show(); // Hiển thị LoginForm
+            LoadProductData();
         }
 
-        private void SaleForm_Load(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            LoadProductData(); // Gọi phương thức LoadProductData để tải dữ liệu sản phẩm khi form được mở
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            Form1 main = new Form1();
+            main.Show();
+            this.Hide();
         }
 
-        private void LoadProductData()
+        private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM Product"; // Lấy tất cả dữ liệu từ bảng Product
+            SearchProduct(txt_search.Text);
+        }
 
-            using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
+        private void Saleform_Load(object sender, EventArgs e)
+        {
+            // SQL query to fetch data
+            string query = "SELECT * FROM Product";
+
+            using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
                 try
                 {
-                    conn.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt); // Lấy dữ liệu vào DataTable
-                    dataGridView1.DataSource = dt; // Gán DataTable vào DataGridView
+                    // Open the database connection
+                    connection.Open();
+
+                    // Create a SqlDataAdapter to execute the query and fill the DataTable
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable dataTable = new DataTable();
+
+                    // Fill the DataTable with query results
+                    adapter.Fill(dataTable);
+
+                    // Bind the DataTable to the DataGridView
+                    dgv_product.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi tải dữ liệu sản phẩm: " + ex.Message);
+                    // Handle any errors that may occur
+                    MessageBox.Show("An error occurred: " + ex.Message);
                 }
             }
-        }
-
-        private void textBoxSearch_TextChanged(object sender, EventArgs e)
-        {
-            string searchText = textBoxSearch.Text; // Lấy nội dung tìm kiếm từ TextBox
-
-            if (string.IsNullOrEmpty(searchText))
-            {
-                LoadProductData(); // Nếu không có gì tìm kiếm, tải lại tất cả sản phẩm
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            }
-            else
-            {
-                SearchProduct(searchText); // Gọi phương thức tìm kiếm
-            }
-
-
         }
 
         private void SearchProduct(string searchText)
         {
-            string query = "SELECT * FROM Product WHERE Code LIKE @searchText OR Name LIKE @searchText"; // Tìm theo mã hoặc tên sản phẩm
+            // Nếu textbox tìm kiếm rỗng, hiển thị tất cả dữ liệu
+            if (string.IsNullOrEmpty(searchText))
+            {
+                LoadProductData(); // Gọi lại hàm load dữ liệu ban đầu
+            }
+            else
+            {
+                // Viết câu lệnh SQL tìm kiếm sản phẩm theo mã hoặc tên
+                string query = "SELECT * FROM Product WHERE Code LIKE @searchText OR Name LIKE @searchText";
 
-            using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
+                // Thực thi truy vấn và cập nhật DataGridView
+                using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+
+                        // Gán kết quả tìm kiếm vào DataGridView
+                        dgv_product.DataSource = dt;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi tìm kiếm: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void LoadProductData()
+        {
+
+            // SQL query to fetch data
+            string query = "SELECT * FROM Product";
+
+            using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
                 try
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%"); // Thêm tham số vào câu truy vấn
+                    // Open the database connection
+                    connection.Open();
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt); // Đổ dữ liệu vào DataTable
+                    // Create a SqlDataAdapter to execute the query and fill the DataTable
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable dataTable = new DataTable();
 
-                    dataGridView1.DataSource = dt; // Gán DataTable vào DataGridView
+                    // Fill the DataTable with query results
+                    adapter.Fill(dataTable);
+
+                    // Bind the DataTable to the DataGridView
+                    dgv_product.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi tìm kiếm sản phẩm: " + ex.Message);
+                    // Handle any errors that may occur
+                    MessageBox.Show("An error occurred: " + ex.Message);
                 }
             }
         }

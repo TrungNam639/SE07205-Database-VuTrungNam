@@ -25,6 +25,9 @@ namespace WindowsFormsApp1
 
             // Optional: set a fixed border style to prevent resizing
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+            // Đặt TextBox mật khẩu để ẩn ký tự nhập
+            txb_password.PasswordChar = '•';
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -37,17 +40,22 @@ namespace WindowsFormsApp1
             string username = txb_username.Text;
             string password = txb_password.Text;
 
-            string hashPassword = PasswordHasher.HashPassword(password);
+            // Băm mật khẩu nhập vào
+            string hashedPassword = PasswordHasher.HashPassword(password);
 
-            bool checkLogin = CheckLogin(username, hashPassword);
-
-            if (checkLogin)
+            // Kiểm tra đăng nhập
+            if (CheckEmployeeLogin(username, hashedPassword))
             {
-
-                menu main = new menu();
-                main.Show();
+                // Chuyển hướng tới form tương ứng với vai trò Employee
+                string role = GetEmployeeRole(username);
+                NavigateToEmployeeForm(role);
+            }
+            else if (CheckCustomerAccountLogin(username, hashedPassword))
+            {
+                // Chuyển hướng tới form Trang chủ cho Customer
+                Customer customerHomeForm = new Customer();
+                customerHomeForm.Show();
                 this.Hide();
-
             }
             else
             {
@@ -168,27 +176,27 @@ namespace WindowsFormsApp1
         // Chuyển hướng đến form Employee tương ứng
         private void NavigateToEmployeeForm(string role)
         {
-            Form employeeForm = null;
+            Form EmployeeManagement = null;
 
             switch (role)
             {
                 case "1": // Admin
-                    employeeForm = new menu();
+                    EmployeeManagement = new menu();
                     break;
                 case "2": // Sale
-                    employeeForm = new SaleForm();
+                    EmployeeManagement = new Saleform();
                     break;
                 case "3": // Warehouse
-                    employeeForm = new WarehouseForm();
+                    EmployeeManagement = new WarehouseForm();
                     break;
                 default:
                     MessageBox.Show("Vai trò không hợp lệ.");
                     return;
             }
 
-            if (employeeForm != null)
+            if (EmployeeManagement != null)
             {
-                employeeForm.Show();
+                EmployeeManagement.Show();
                 this.Hide();
             }
         }
