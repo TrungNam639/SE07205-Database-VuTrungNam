@@ -15,7 +15,7 @@ namespace WindowsFormsApp1
 {
     public partial class UpdateCustomer : Form
     {
-        public UpdateCustomer(string CustomerID, string CustomerName, int PhoneNumber, string Address)
+        public UpdateCustomer(string CustomerID, string CustomerName, string PhoneNumber, string Address)
         {
             InitializeComponent();
             // Set the form to start in the center of the screen
@@ -34,7 +34,7 @@ namespace WindowsFormsApp1
             txb_name.Text = CustomerName;
         }
 
-        private void UpdateCustomerInDatabase(string CustomerID, string CustomerName, int PhoneNumber, string Address)
+        private void UpdateCustomerInDatabase(string CustomerID, string CustomerName, string PhoneNumber, string Address)
         {
             string query = "UPDATE Customer SET CustomerName = @CustomerName, Address = @Address, PhoneNumber = @PhoneNumber WHERE CustomerID = @CustomerID";
 
@@ -74,7 +74,8 @@ namespace WindowsFormsApp1
 
         private void DeleteCustomerFromDatabase(string CustomerID)
         {
-            string query = "DELETE FROM Customer WHERE CustomerID = @CustomerID";
+            // Thay đổi trạng thái của khách hàng thành không hoạt động (active = 0) thay vì xóa
+            string query = "UPDATE Customer SET active = 0 WHERE CustomerID = @CustomerID";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -87,16 +88,16 @@ namespace WindowsFormsApp1
                         // Add parameter to prevent SQL injection
                         command.Parameters.AddWithValue("@CustomerID", CustomerID);
 
-                        // Execute the delete command
+                        // Execute the update command
                         int rowsAffected = command.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Customer deleted successfully.");
+                            MessageBox.Show("Customer marked as inactive.");
                         }
                         else
                         {
-                            MessageBox.Show("No customer found with the specified code.");
+                            MessageBox.Show("No customer found with the specified ID.");
                         }
                     }
                 }
@@ -107,12 +108,13 @@ namespace WindowsFormsApp1
             }
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
             // Get updated values from textboxes
             string CustomerID = txb_id.Text;
             string CustomerName = txb_name.Text;
-            int PhoneNumber = int.Parse(txb_phone.Text.ToString().Trim());
+            string PhoneNumber = txb_phone.Text;
             string Address = txb_address.Text;
 
 

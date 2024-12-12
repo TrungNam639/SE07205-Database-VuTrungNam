@@ -178,7 +178,7 @@ namespace WindowsFormsApp1
 
         private void LoadData()
         {
-            // SQL query to fetch data and join with Product and Customer tables to get their names
+            // SQL query để lấy dữ liệu với active = 1
             string query = @"
     SELECT 
         ph.PurchaseID,
@@ -195,32 +195,35 @@ namespace WindowsFormsApp1
     INNER JOIN 
         Product p ON ph.Code = p.code  
     INNER JOIN 
-        Customer c ON ph.CustomerID = c.CustomerID"; //Join with Customer table to get customer name
+        Customer c ON ph.CustomerID = c.CustomerID
+    WHERE 
+        ph.active = 1"; // Thêm điều kiện active = 1
 
-    using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
+            using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
                 try
                 {
-                    // Open the database connection
+                    // Mở kết nối
                     connection.Open();
 
-                    // Create a SqlDataAdapter to execute the query and fill the DataTable
+                    // Tạo SqlDataAdapter để thực thi câu lệnh và đổ dữ liệu vào DataTable
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
 
-                    // Fill the DataTable with query results
+                    // Đổ dữ liệu vào DataTable
                     adapter.Fill(dataTable);
 
-                    // Bind the DataTable to the DataGridView
+                    // Gắn DataTable vào DataGridView
                     dataGridView1.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
-                    // Handle any errors that may occur
+                    // Xử lý lỗi
                     MessageBox.Show("An error occurred: " + ex.Message);
                 }
             }
         }
+
 
 
         private void button1_Click(object sender, EventArgs e)
@@ -246,52 +249,56 @@ namespace WindowsFormsApp1
 
         private void LoadPurchaseHistoryWithDetails(DataGridView dataGridView, int statusIndex, string searchKeyword = "")
         {
-            // SQL query để lọc kết quả theo trạng thái và từ khóa tìm kiếm
+            // SQL query để lọc kết quả theo trạng thái, từ khóa tìm kiếm và active = 1
             string query = @"
-        SELECT 
-            ph.PurchaseID,
-            ph.CustomerID,
-            c.CustomerName,
-            ph.Code,
-            p.name AS ProductName,
-            ph.PurchaseDate,
-            ph.Quantity,
-            ph.[status],
-            ph.active
-        FROM 
-            PurchaseHistory ph
-        INNER JOIN 
-            Product p ON ph.Code = p.code
-        INNER JOIN 
-            Customer c ON ph.CustomerID = c.CustomerID
-        WHERE 
-            ph.[status] = @status
-            AND (ph.PurchaseID LIKE @searchKeyword OR c.CustomerName LIKE @searchKeyword OR p.name LIKE @searchKeyword)";  // Thêm điều kiện tìm kiếm vào WHERE
+    SELECT 
+        ph.PurchaseID,
+        ph.CustomerID,
+        c.CustomerName,
+        ph.Code,
+        p.name AS ProductName,
+        ph.PurchaseDate,
+        ph.Quantity,
+        ph.[status],
+        ph.active
+    FROM 
+        PurchaseHistory ph
+    INNER JOIN 
+        Product p ON ph.Code = p.code
+    INNER JOIN 
+        Customer c ON ph.CustomerID = c.CustomerID
+    WHERE 
+        ph.[status] = @status
+        AND ph.active = 1
+        AND (ph.PurchaseID LIKE @searchKeyword 
+             OR c.CustomerName LIKE @searchKeyword 
+             OR p.name LIKE @searchKeyword)";
 
-            // Query cho "All" trạng thái (để lấy tất cả các bản ghi)
+            // Query cho "All" trạng thái (hiển thị tất cả các bản ghi có active = 1)
             string queryAll = @"
-        SELECT 
-            ph.PurchaseID,
-            ph.CustomerID,
-            c.CustomerName,
-            ph.Code,
-            p.name AS ProductName,
-            ph.PurchaseDate,
-            ph.Quantity,
-            ph.status,
-            ph.active
-        FROM 
-            PurchaseHistory ph
-        INNER JOIN 
-            Product p ON ph.Code = p.code
-        INNER JOIN 
-            Customer c ON ph.CustomerID = c.CustomerID
-        WHERE 
-            ph.PurchaseID LIKE @searchKeyword 
-            OR c.CustomerName LIKE @searchKeyword 
-            OR p.name LIKE @searchKeyword";  // Điều kiện tìm kiếm cho tất cả trạng thái
+    SELECT 
+        ph.PurchaseID,
+        ph.CustomerID,
+        c.CustomerName,
+        ph.Code,
+        p.name AS ProductName,
+        ph.PurchaseDate,
+        ph.Quantity,
+        ph.status,
+        ph.active
+    FROM 
+        PurchaseHistory ph
+    INNER JOIN 
+        Product p ON ph.Code = p.code
+    INNER JOIN 
+        Customer c ON ph.CustomerID = c.CustomerID
+    WHERE 
+        ph.active = 1
+        AND (ph.PurchaseID LIKE @searchKeyword 
+             OR c.CustomerName LIKE @searchKeyword 
+             OR p.name LIKE @searchKeyword)";
 
-            // Nếu tìm kiếm "All", không lọc theo trạng thái
+            // Nếu trạng thái là "All", hiển thị tất cả các bản ghi với active = 1
             string selectedStatus = "";
             if (statusIndex == 0) // "All"
             {
@@ -308,13 +315,16 @@ namespace WindowsFormsApp1
                 {
                     connection.Open();
 
-                    // Chọn câu lệnh SQL tương ứng với trạng thái
+                    // Chọn câu lệnh SQL phù hợp
                     string queryToExecute = (statusIndex == 0) ? queryAll : query;
                     SqlCommand command = new SqlCommand(queryToExecute, connection);
 
                     // Thêm tham số vào câu lệnh SQL
-                    command.Parameters.AddWithValue("@status", selectedStatus);
-                    command.Parameters.AddWithValue("@searchKeyword", "%" + searchKeyword + "%");  // Thêm tham số tìm kiếm (với % để tìm kiếm theo mẫu)
+                    if (statusIndex != 0)
+                    {
+                        command.Parameters.AddWithValue("@status", selectedStatus); // Thêm tham số trạng thái
+                    }
+                    command.Parameters.AddWithValue("@searchKeyword", "%" + searchKeyword + "%"); // Thêm tham số tìm kiếm
 
                     // Thực thi câu lệnh và lấy dữ liệu
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -324,7 +334,7 @@ namespace WindowsFormsApp1
                     // Gắn dữ liệu vào DataGridView
                     dataGridView.DataSource = dataTable;
 
-                    // Tùy chỉnh DataGridView (tùy chọn)
+                    // Tùy chỉnh DataGridView
                     dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                     dataGridView.ReadOnly = true;
                 }
@@ -334,6 +344,7 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
 
 
         private void PurchaseHis_Load(object sender, EventArgs e)

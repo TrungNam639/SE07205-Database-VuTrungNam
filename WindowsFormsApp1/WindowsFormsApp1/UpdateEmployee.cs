@@ -39,7 +39,8 @@ namespace WindowsFormsApp1
 
         private void UpdateEmployeeInDatabase(string code, string name, string position, int roleId, string username, string password)
         {
-            string query = "UPDATE Employee SET code = @code, name = @name, position = @position, roleId = @roleId, username = @username WHERE password = @password";
+            string query = "UPDATE Employee SET code = @code, name = @name, position = @position, roleId = @roleId, username = @username WHERE code = @code";
+
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -79,7 +80,7 @@ namespace WindowsFormsApp1
 
         private void DeleteEmployeeFromDatabase(string code)
         {
-            string query = "DELETE FROM Employee WHERE code = @code";
+            string query = "UPDATE Employee SET active = 0 WHERE code = @code";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -92,12 +93,12 @@ namespace WindowsFormsApp1
                         // Add parameter to prevent SQL injection
                         command.Parameters.AddWithValue("@code", code);
 
-                        // Execute the delete command
+                        // Execute the update command
                         int rowsAffected = command.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Employee deleted successfully.");
+                            MessageBox.Show("Employee marked as inactive successfully.");
                         }
                         else
                         {

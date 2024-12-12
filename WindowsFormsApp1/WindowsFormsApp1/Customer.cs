@@ -35,13 +35,11 @@ namespace WindowsFormsApp1
         }
         private void LoadCustomerData()
         {
-
-            // SQL query to fetch data
-            string query = "SELECT * FROM Customer";
+            // SQL query to fetch only active customers (active = 1)
+            string query = "SELECT * FROM Customer WHERE active = 1"; // Chỉ lấy dữ liệu có active = 1
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
-
                 try
                 {
                     // Open the database connection
@@ -56,17 +54,16 @@ namespace WindowsFormsApp1
 
                     // Bind the DataTable to the DataGridView
                     dgv_customer.DataSource = dataTable;
-
-                    
                 }
                 catch (Exception ex)
                 {
                     // Handle any errors that may occur
                     MessageBox.Show("An error occurred: " + ex.Message);
                 }
-                
             }
         }
+
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -82,7 +79,7 @@ namespace WindowsFormsApp1
         private void dgv_customer_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Check if the clicked row is valid
-            if (e.RowIndex >= 0 & PasswordHasher.roleID != 3 )
+            if (e.RowIndex >= 0)
             {
                 // Get the selected row
                 DataGridViewRow selectedRow = dgv_customer.Rows[e.RowIndex];
@@ -90,13 +87,12 @@ namespace WindowsFormsApp1
                 // Retrieve data from each cell in the selected row
                 var CustomerID = selectedRow.Cells["CustomerID"].Value.ToString();
                 var CustomerName = selectedRow.Cells["CustomerName"].Value.ToString();
-                var PhoneNumber = int.Parse(selectedRow.Cells["PhoneNumber"].Value.ToString());
+                var PhoneNumber = selectedRow.Cells["PhoneNumber"].Value.ToString(); // Changed to string
                 var Address = selectedRow.Cells["Address"].Value.ToString();
 
-
-                UpdateCustomer updateCustomer= new UpdateCustomer(CustomerID, CustomerName, PhoneNumber, Address);
+                // Show the update form with the customer data
+                UpdateCustomer updateCustomer = new UpdateCustomer(CustomerID, CustomerName, PhoneNumber, Address);
                 updateCustomer.ShowDialog();
-
             }
         }
 
@@ -114,21 +110,22 @@ namespace WindowsFormsApp1
 
         private void SearchCustomer(string searchText)
         {
-            // Nếu textbox tìm kiếm rỗng, hiển thị tất cả dữ liệu
+            // Nếu textbox tìm kiếm rỗng, hiển thị tất cả dữ liệu có active = 1
             if (string.IsNullOrEmpty(searchText))
             {
-                LoadCustomerData(); // Gọi lại hàm load dữ liệu ban đầu
+                LoadCustomerData(); // Gọi lại hàm load dữ liệu ban đầu với active = 1
             }
             else
             {
-                // Viết câu lệnh SQL tìm kiếm theo CustomerID, CustomerName hoặc PhoneNumber
+                // Viết câu lệnh SQL tìm kiếm theo CustomerID, CustomerName, PhoneNumber và chỉ lấy những khách hàng có active = 1
                 string query = @"
             SELECT * 
             FROM Customer 
             WHERE 
-                CustomerID LIKE @searchText 
+                (CustomerID LIKE @searchText 
                 OR CustomerName LIKE @searchText
-                OR PhoneNumber LIKE @searchText";  // Tìm kiếm theo CustomerID, CustomerName hoặc PhoneNumber
+                OR PhoneNumber LIKE @searchText) 
+                AND active = 1";  // Chỉ lấy khách hàng có active = 1
 
                 // Thực thi truy vấn và cập nhật DataGridView
                 using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
@@ -153,6 +150,8 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
+
 
     }
 }

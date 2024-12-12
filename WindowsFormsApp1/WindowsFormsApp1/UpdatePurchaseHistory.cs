@@ -13,6 +13,9 @@ namespace WindowsFormsApp1
 {
     public partial class UpdatePurchaseHistory : Form
     {
+        string[] items = { "Cancle", "Pending", "Finish" };
+        static int selectID = 0;
+
         private string purchaseID, customerID, productCode, purchaseDate, status;
         private int quantity, active;
 
@@ -33,10 +36,43 @@ namespace WindowsFormsApp1
                 DeletePurchaseHistoryFromDatabase(purchaseID);
             }
         }
+
+        private void cbx_status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selectedIndex = cbx_status.SelectedIndex; // Lấy chỉ số của item đã chọn trong ComboBox
+            if (selectedIndex != -1) // Kiểm tra nếu người dùng đã chọn một giá trị
+            {
+                // Hiển thị thông tin về trạng thái đã chọn
+                MessageBox.Show($"Selected Status: {cbx_status.SelectedItem.ToString()}");
+
+                // Nếu cần, bạn có thể cập nhật trạng thái vào các TextBox hoặc thực hiện hành động nào đó
+                // Ví dụ: cập nhật giá trị của `status` trong cơ sở dữ liệu hoặc thay đổi giao diện
+
+                string selectedStatus = cbx_status.SelectedItem.ToString();
+                // Thực hiện hành động tương ứng với trạng thái đã chọn
+                if (selectedStatus == "Cancle")
+                {
+                    // Ví dụ: cập nhật một số thông tin liên quan đến trạng thái "Cancle"
+                }
+                else if (selectedStatus == "Pending")
+                {
+                    // Ví dụ: xử lý trạng thái "Pending"
+                }
+                else if (selectedStatus == "Finish")
+                {
+                    // Ví dụ: xử lý trạng thái "Finish"
+                }
+            }
+            else
+            {
+                MessageBox.Show("No item selected.");
+            }
+        }
+
         private void DeletePurchaseHistoryFromDatabase(string purchaseID)
         {
-            // Câu lệnh SQL để xóa bản ghi trong bảng PurchaseHistory
-            string query = "DELETE FROM PurchaseHistory WHERE PurchaseID = @PurchaseID";
+            // Câu lệnh SQL để cập nhật active = 0 thay vì xóa bản ghi
+            string query = "UPDATE PurchaseHistory SET active = 0 WHERE PurchaseID = @PurchaseID";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -54,11 +90,11 @@ namespace WindowsFormsApp1
                         // Thực thi câu lệnh và nhận số lượng dòng bị ảnh hưởng
                         int rowsAffected = command.ExecuteNonQuery();
 
-                        // Hiển thị thông báo nếu xóa thành công
+                        // Hiển thị thông báo nếu cập nhật thành công
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Purchase history deleted successfully.");
-                            this.Close();  // Đóng form sau khi xóa
+                            MessageBox.Show("Purchase history marked as inactive successfully.");
+                            this.Close();  // Đóng form sau khi cập nhật
                         }
                         else
                         {
@@ -76,9 +112,8 @@ namespace WindowsFormsApp1
         public UpdatePurchaseHistory(string purchaseID, string customerID, string productCode, string purchaseDate, int quantity, string status, int active)
         {
             InitializeComponent();
-            // Set the form to start in the center of the screen
+            /// Set the form to start in the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
-
 
             // Disable the maximize/restore button
             this.MaximizeBox = false;
@@ -94,19 +129,25 @@ namespace WindowsFormsApp1
             this.status = status;
             this.active = active;
 
-            // Gọi hàm để hiển thị thông tin lên form
+            // Call the function to populate ComboBox and other controls
             PopulateForm();
         }
 
         private void PopulateForm()
         {
-            // Điền thông tin vào các trường TextBox và ComboBox
+            // Populate ComboBox with status options
+            cbx_status.Items.Clear();  // Clear any existing items
+            cbx_status.Items.AddRange(items);  // Add predefined items to ComboBox
+
+            // Set the selected item from the status variable
+            cbx_status.SelectedItem = status;
+
+            // Fill other fields
             tBx_purchaseID.Text = purchaseID;
             tBx_customerID.Text = customerID;
             tBx_productID.Text = productCode;
             tBx_quantity.Text = quantity.ToString();
-            dtp_datetime.Value = DateTime.Parse(purchaseDate);  // Convert chuỗi ngày thành DateTime
-            cbx_status.SelectedItem = status;  // Set giá trị của ComboBox là status
+            dtp_datetime.Value = DateTime.Parse(purchaseDate);  // Convert the date string to DateTime
         }
 
         private void button1_Click(object sender, EventArgs e)

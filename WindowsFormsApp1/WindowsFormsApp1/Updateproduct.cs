@@ -74,7 +74,7 @@ namespace WindowsFormsApp1
 
         private void DeleteProductFromDatabase(string code)
         {
-            string query = "DELETE FROM Product WHERE Code = @Code";
+            string query = "UPDATE Product SET active = 0 WHERE code = @Code";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -84,15 +84,15 @@ namespace WindowsFormsApp1
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        // Add parameter to prevent SQL injection
+                        // Thêm tham số để ngăn chặn SQL injection
                         command.Parameters.AddWithValue("@Code", code);
 
-                        // Execute the delete command
+                        // Thực thi câu lệnh UPDATE
                         int rowsAffected = command.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Product deleted successfully.");
+                            MessageBox.Show("Product deactivated successfully.");
                         }
                         else
                         {
@@ -106,6 +106,7 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
         private void txb_price_TextChanged(object sender, EventArgs e)
         {
 

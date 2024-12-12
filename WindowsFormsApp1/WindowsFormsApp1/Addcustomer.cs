@@ -28,7 +28,7 @@ namespace WindowsFormsApp1
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
-        private void InsertData(string CustomerID, string CustomerName, int PhoneNumber, string Address)
+        private void InsertData(string CustomerID, string CustomerName, string PhoneNumber, string Address)
         {
             // Connection string to your database
 
@@ -68,7 +68,7 @@ namespace WindowsFormsApp1
         {
             string ID = txb_id.Text.ToString();
             string Ten = txb_name.Text.ToString();
-            int Sodt = int.Parse(txb_phone.Text.ToString());
+            string Sodt = txb_phone.Text.ToString();
             string diachi = txb_address.Text.ToString();
 
             InsertData(ID, Ten, Sodt, diachi);

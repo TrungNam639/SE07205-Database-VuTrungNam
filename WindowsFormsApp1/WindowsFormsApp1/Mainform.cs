@@ -41,37 +41,34 @@ namespace WindowsFormsApp1
         }
         private void LoadProductData()
         {
-                
-                // SQL query to fetch data
-                string query = "SELECT * FROM Product ";
+            // Cập nhật câu lệnh SQL để lọc dữ liệu theo điều kiện active = 1
+            string query = "SELECT * FROM Product WHERE active = 1";
 
-                using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
+            using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
+            {
+                try
                 {
+                    // Mở kết nối với cơ sở dữ liệu
+                    connection.Open();
 
-                    try
-                    {
-                        // Open the database connection
-                        connection.Open();
+                    // Tạo SqlDataAdapter để thực thi truy vấn và điền dữ liệu vào DataTable
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable dataTable = new DataTable();
 
-                        // Create a SqlDataAdapter to execute the query and fill the DataTable
-                        SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-                        DataTable dataTable = new DataTable();
+                    // Điền dữ liệu vào DataTable từ kết quả truy vấn
+                    adapter.Fill(dataTable);
 
-                        // Fill the DataTable with query results
-                        adapter.Fill(dataTable);
-
-                        // Bind the DataTable to the DataGridView
-                        dgv_product.DataSource = dataTable;
-
-                    
+                    // Liên kết DataTable với DataGridView
+                    dgv_product.DataSource = dataTable;
                 }
-                    catch (Exception ex)
-                    {
-                        // Handle any errors that may occur
-                        MessageBox.Show("An error occurred: " + ex.Message);
-                    }
+                catch (Exception ex)
+                {
+                    // Xử lý lỗi nếu có
+                    MessageBox.Show("An error occurred: " + ex.Message);
                 }
+            }
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -104,15 +101,15 @@ namespace WindowsFormsApp1
 
         private void SearchProduct(string searchText)
         {
-            // Nếu textbox tìm kiếm rỗng, hiển thị tất cả dữ liệu
+            // Nếu textbox tìm kiếm rỗng, hiển thị tất cả dữ liệu với active = 1
             if (string.IsNullOrEmpty(searchText))
             {
-                LoadProductData(); // Gọi lại hàm load dữ liệu ban đầu
+                LoadProductData(); // Gọi lại hàm load dữ liệu ban đầu với active = 1
             }
             else
             {
-                // Viết câu lệnh SQL tìm kiếm sản phẩm theo mã hoặc tên
-                string query = "SELECT * FROM Product WHERE Code LIKE @searchText OR Name LIKE @searchText";
+                // Cập nhật câu lệnh SQL để lọc dữ liệu theo active = 1 và tìm kiếm theo mã hoặc tên
+                string query = "SELECT * FROM Product WHERE (Code LIKE @searchText OR Name LIKE @searchText) AND active = 1";
 
                 // Thực thi truy vấn và cập nhật DataGridView
                 using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
@@ -137,5 +134,6 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
     }
 }
