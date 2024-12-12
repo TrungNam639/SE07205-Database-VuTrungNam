@@ -143,7 +143,7 @@ namespace WindowsFormsApp1
         private void dgv_product_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Check if the clicked row is valid
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 & PasswordHasher.roleID != 3)
             {
                 // Get the selected row
                 DataGridViewRow selectedRow = dgv_product.Rows[e.RowIndex];

@@ -24,6 +24,19 @@ namespace WindowsFormsApp1
 
             // Optional: set a fixed border style to prevent resizing
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+            if (PasswordHasher.roleID == 2)
+            {
+
+                button5.Visible = false;
+            }
+            else if (PasswordHasher.roleID == 3)
+            {
+                button5.Visible = false;
+                button2.Visible = false;
+                
+            }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,7 +55,7 @@ namespace WindowsFormsApp1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            PurchaseHistory main = new PurchaseHistory();
+            PurchaseHis main = new PurchaseHis();
             main.Show();
             this.Hide();
         }

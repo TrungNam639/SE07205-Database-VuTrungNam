@@ -43,19 +43,15 @@ namespace WindowsFormsApp1
             // Băm mật khẩu nhập vào
             string hashedPassword = PasswordHasher.HashPassword(password);
 
-            // Kiểm tra đăng nhập
-            if (CheckEmployeeLogin(username, hashedPassword))
+            bool checkLogin = CheckLogin(username, hashedPassword);
+
+            if (checkLogin)
             {
-                // Chuyển hướng tới form tương ứng với vai trò Employee
-                string role = GetEmployeeRole(username);
-                NavigateToEmployeeForm(role);
-            }
-            else if (CheckCustomerAccountLogin(username, hashedPassword))
-            {
-                // Chuyển hướng tới form Trang chủ cho Customer
-                Customer customerHomeForm = new Customer();
-                customerHomeForm.Show();
+
+                menu main = new menu();
+                main.Show();
                 this.Hide();
+
             }
             else
             {
@@ -63,9 +59,10 @@ namespace WindowsFormsApp1
             }
 
         }
+
         private bool CheckLogin(string username, string hashedPassword)
         {
-            string query = "SELECT password FROM Employee WHERE username = @username";
+            string query = "SELECT password, roleid FROM Employee WHERE username = @username";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -75,12 +72,18 @@ namespace WindowsFormsApp1
                 try
                 {
                     connection.Open();
-                    object result = command.ExecuteScalar();
-
-                    if (result != null)
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        string storedHash = result.ToString(); // Retrieved hashed password
-                        return storedHash == hashedPassword;  // Compare the hashes
+                        if (reader.Read())
+                        {
+                            string storedHash = reader["password"].ToString(); // Retrieved hashed password
+                            int roleid = Convert.ToInt32(reader["roleid"]); // Retrieved roleId
+
+
+                            PasswordHasher.roleID = roleid; // Assign the roleId to your global variable or utility class
+
+                            return storedHash == hashedPassword; // Compare the hashes
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -91,116 +94,16 @@ namespace WindowsFormsApp1
 
             return false; // Return false if username not found or any error occurs
         }
-        private bool CheckEmployeeLogin(string username, string hashedPassword)
+
+        private void button2_Click(object sender, EventArgs e)
         {
-            bool isValid = false;
-            string query = "SELECT COUNT(*) FROM Employee WHERE Username = @username AND Password = @password";
-
-            using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
+            DialogResult result = MessageBox.Show("Are you sure you want to exit?", "Exit Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
             {
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", hashedPassword);
-
-                try
-                {
-                    conn.Open();
-                    int count = (int)cmd.ExecuteScalar();
-                    if (count > 0)
-                    {
-                        isValid = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi kết nối: " + ex.Message);
-                }
-            }
-            return isValid;
-        }
-
-        // Kiểm tra đăng nhập với bảng CustomerAccount
-        private bool CheckCustomerAccountLogin(string username, string hashedPassword)
-        {
-            bool isValid = false;
-            string query = "SELECT COUNT(*) FROM CustomerAccount WHERE Username = @username AND Password = @password";
-
-            using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
-            {
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", hashedPassword);
-
-                try
-                {
-                    conn.Open();
-                    int count = (int)cmd.ExecuteScalar();
-                    if (count > 0)
-                    {
-                        isValid = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi kết nối: " + ex.Message);
-                }
-            }
-            return isValid;
-        }
-
-        // Lấy vai trò của Employee sau khi đăng nhập
-        private string GetEmployeeRole(string username)
-        {
-            string role = "";
-            string query = "SELECT RoleID FROM Employee WHERE Username = @username";
-
-            using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
-            {
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@username", username);
-
-                try
-                {
-                    conn.Open();
-                    role = cmd.ExecuteScalar().ToString();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi kết nối: " + ex.Message);
-                }
-            }
-
-            return role;
-        }
-
-        // Chuyển hướng đến form Employee tương ứng
-        private void NavigateToEmployeeForm(string role)
-        {
-            Form EmployeeManagement = null;
-
-            switch (role)
-            {
-                case "1": // Admin
-                    EmployeeManagement = new menu();
-                    break;
-                case "2": // Sale
-                    EmployeeManagement = new Saleform();
-                    break;
-                case "3": // Warehouse
-                    EmployeeManagement = new WarehouseForm();
-                    break;
-                default:
-                    MessageBox.Show("Vai trò không hợp lệ.");
-                    return;
-            }
-
-            if (EmployeeManagement != null)
-            {
-                EmployeeManagement.Show();
-                this.Hide();
+                Application.Exit(); // Close the application
             }
         }
-
-
     }
+
+
 }

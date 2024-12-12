@@ -93,5 +93,10 @@ namespace WindowsFormsApp1
             e.Cancel = true;
             this.Hide();
         }
+
+        private void AddEmployee_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -9,6 +9,8 @@ namespace WindowsFormsApp1
 {
     internal class PasswordHasher
     {
+        internal static int roleID;
+
         public static string HashPassword(string password)
         {
             using (SHA256  sha256 = SHA256.Create())

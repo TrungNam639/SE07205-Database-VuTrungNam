@@ -64,11 +64,11 @@
     <Compile Include="AddProductForm.Designer.cs">
       <DependentUpon>AddProductForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddPuchase.cs">
+    <Compile Include="AddPurchaseHistory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddPuchase.Designer.cs">
-      <DependentUpon>AddPuchase.cs</DependentUpon>
+    <Compile Include="AddPurchaseHistory.Designer.cs">
+      <DependentUpon>AddPurchaseHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="connectionString.cs" />
     <Compile Include="Customer.cs">
@@ -104,17 +104,11 @@
     <Compile Include="PasswordHasher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PurchaseHistory.cs">
+    <Compile Include="PurchaseHis.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PurchaseHistory.Designer.cs">
-      <DependentUpon>PurchaseHistory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Saleform.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Saleform.Designer.cs">
-      <DependentUpon>Saleform.cs</DependentUpon>
+    <Compile Include="PurchaseHis.Designer.cs">
+      <DependentUpon>PurchaseHis.cs</DependentUpon>
     </Compile>
     <Compile Include="UpdateCustomer.cs">
       <SubType>Form</SubType>
@@ -134,17 +128,11 @@
     <Compile Include="Updateproduct.Designer.cs">
       <DependentUpon>Updateproduct.cs</DependentUpon>
     </Compile>
-    <Compile Include="UpdatePurchase.cs">
+    <Compile Include="UpdatePurchaseHistory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UpdatePurchase.Designer.cs">
-      <DependentUpon>UpdatePurchase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WarehouseForm.Designer.cs">
-      <DependentUpon>WarehouseForm.cs</DependentUpon>
+    <Compile Include="UpdatePurchaseHistory.Designer.cs">
+      <DependentUpon>UpdatePurchaseHistory.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Addcustomer.resx">
       <DependentUpon>Addcustomer.cs</DependentUpon>
@@ -155,8 +143,8 @@
     <EmbeddedResource Include="AddProductForm.resx">
       <DependentUpon>AddProductForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddPuchase.resx">
-      <DependentUpon>AddPuchase.cs</DependentUpon>
+    <EmbeddedResource Include="AddPurchaseHistory.resx">
+      <DependentUpon>AddPurchaseHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Customer.resx">
       <DependentUpon>Customer.cs</DependentUpon>
@@ -183,11 +171,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="PurchaseHistory.resx">
-      <DependentUpon>PurchaseHistory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Saleform.resx">
-      <DependentUpon>Saleform.cs</DependentUpon>
+    <EmbeddedResource Include="PurchaseHis.resx">
+      <DependentUpon>PurchaseHis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdateCustomer.resx">
       <DependentUpon>UpdateCustomer.cs</DependentUpon>
@@ -198,11 +183,8 @@
     <EmbeddedResource Include="Updateproduct.resx">
       <DependentUpon>Updateproduct.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UpdatePurchase.resx">
-      <DependentUpon>UpdatePurchase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WarehouseForm.resx">
-      <DependentUpon>WarehouseForm.cs</DependentUpon>
+    <EmbeddedResource Include="UpdatePurchaseHistory.resx">
+      <DependentUpon>UpdatePurchaseHistory.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -219,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\tải xuống.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

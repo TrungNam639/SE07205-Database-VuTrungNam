@@ -18,16 +18,18 @@ namespace WindowsFormsApp1
             InitializeComponent();
 
             this.WindowState = FormWindowState.Maximized;
-            /*this.Width = Screen.PrimaryScreen.WorkingArea.Width;
-            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
-            this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(0, 0);*/
 
             // set the form border style to ensure it has a standard window look
             this.FormBorderStyle = FormBorderStyle.Sizable;
 
             // optionally, set startposition to centerscreen if you want centered loading
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            if (PasswordHasher.roleID == 3)
+            {
+
+                button1.Visible = false;
+            }
         }
         
 
@@ -41,10 +43,11 @@ namespace WindowsFormsApp1
         {
                 
                 // SQL query to fetch data
-                string query = "SELECT * FROM Product";
+                string query = "SELECT * FROM Product ";
 
                 using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
                 {
+
                     try
                     {
                         // Open the database connection
@@ -59,7 +62,9 @@ namespace WindowsFormsApp1
 
                         // Bind the DataTable to the DataGridView
                         dgv_product.DataSource = dataTable;
-                    }
+
+                    
+                }
                     catch (Exception ex)
                     {
                         // Handle any errors that may occur

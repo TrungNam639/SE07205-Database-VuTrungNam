@@ -17,12 +17,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-            /*this.Width = Screen.PrimaryScreen.WorkingArea.Width;
-            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
-            this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(0, 0);*/
-
-            // set the form border style to ensure it has a standard window look
+            
             this.FormBorderStyle = FormBorderStyle.Sizable;
 
             // optionally, set startposition to centerscreen if you want centered loading
@@ -94,16 +89,11 @@ namespace WindowsFormsApp1
                 var username = selectedRow.Cells["username"].Value.ToString();
                 var password = selectedRow.Cells["password"].Value.ToString();
 
-                // Display data in textboxes or labels, or use it as needed
-                /*  txtID.Text = id.ToString();
-                  txtName.Text = name;
-                  txtAge.Text = age.ToString();*/
-
-                // MessageBox.Show($"Code  : {code}, Name: {name}, Price: {price},  Quantity: {quantity}");
+                
 
 
-                UpdateEmployee updateProduct = new UpdateEmployee(code, name, position, roleId, username, password);
-                updateProduct.ShowDialog();
+                UpdateEmployee updateemployee = new UpdateEmployee(code, name, position, roleId, username, password);
+                updateemployee.ShowDialog();
 
             }
         }
@@ -117,10 +107,10 @@ namespace WindowsFormsApp1
 
         private void txt_search_TextChanged(object sender, EventArgs e)
         {
-            SearchProduct(txt_search.Text);
+            SearchEmployee(txt_search.Text);
         }
 
-        private void SearchProduct(string searchText)
+        private void SearchEmployee(string searchText)
         {
             // Nếu textbox tìm kiếm rỗng, hiển thị tất cả dữ liệu
             if (string.IsNullOrEmpty(searchText))
@@ -130,7 +120,7 @@ namespace WindowsFormsApp1
             else
             {
                 // Viết câu lệnh SQL tìm kiếm sản phẩm theo mã hoặc tên
-                string query = "SELECT * FROM Product WHERE Code LIKE @searchText OR Name LIKE @searchText";
+                string query = "SELECT * FROM Employee WHERE Code LIKE @searchText OR Name LIKE @searchText";
 
                 // Thực thi truy vấn và cập nhật DataGridView
                 using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))
