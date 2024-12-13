@@ -34,7 +34,7 @@ namespace WindowsFormsApp1
         private void LoadEmployeeData()
         {
             // SQL query to fetch only active employees
-            string query = "SELECT * FROM Employee WHERE active = 1";
+            string query = "SELECT * FROM Employee";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -119,7 +119,7 @@ namespace WindowsFormsApp1
             else
             {
                 // Viết câu lệnh SQL tìm kiếm sản phẩm theo mã hoặc tên và chỉ hiển thị active = 1
-                string query = "SELECT * FROM Employee WHERE active = 1 AND (Code LIKE @searchText OR Name LIKE @searchText)";
+                string query = "SELECT * FROM Employee WHERE Code LIKE @searchText OR Name LIKE @searchText";
 
                 // Thực thi truy vấn và cập nhật DataGridView
                 using (SqlConnection conn = new SqlConnection(connectionString.sqlconnection))

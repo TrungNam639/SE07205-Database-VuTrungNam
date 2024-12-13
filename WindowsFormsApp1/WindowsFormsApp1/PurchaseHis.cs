@@ -32,7 +32,7 @@ namespace WindowsFormsApp1
             comboBox1.Items.AddRange(items);
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
 
-            if (PasswordHasher.roleID == 3)
+            if (PasswordHasher.roleID == 4)
             {
 
                 button2.Visible = false;
@@ -52,8 +52,8 @@ namespace WindowsFormsApp1
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Check if the clicked row is valid and that the roleID is not 3 (for restricting access)
-            if (e.RowIndex >= 0 && PasswordHasher.roleID != 3)
+            // Check if the clicked row is valid and that the roleID is not 4 (for restricting access)
+            if (e.RowIndex >= 0 && PasswordHasher.roleID != 4)
             {
                 // Get the selected row
                 DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];

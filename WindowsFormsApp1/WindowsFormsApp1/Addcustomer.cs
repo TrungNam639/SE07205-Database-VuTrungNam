@@ -47,7 +47,6 @@ namespace WindowsFormsApp1
                     {
                         // Add parameters to prevent SQL injection
                         command.Parameters.AddWithValue("@CustomerName", CustomerName);
-
                         command.Parameters.AddWithValue("@CustomerID", CustomerID);
                         command.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
                         command.Parameters.AddWithValue("@Address", Address);

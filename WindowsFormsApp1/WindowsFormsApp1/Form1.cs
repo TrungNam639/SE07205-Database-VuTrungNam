@@ -47,7 +47,6 @@ namespace WindowsFormsApp1
 
             if (checkLogin)
             {
-
                 menu main = new menu();
                 main.Show();
                 this.Hide();

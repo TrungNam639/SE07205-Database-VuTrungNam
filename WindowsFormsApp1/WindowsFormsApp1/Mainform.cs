@@ -25,7 +25,7 @@ namespace WindowsFormsApp1
             // optionally, set startposition to centerscreen if you want centered loading
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            if (PasswordHasher.roleID == 3)
+            if (PasswordHasher.roleID == 4)
             {
 
                 button1.Visible = false;

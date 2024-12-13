@@ -39,7 +39,9 @@ namespace WindowsFormsApp1
 
         private void UpdateEmployeeInDatabase(string code, string name, string position, int roleId, string username, string password)
         {
-            string query = "UPDATE Employee SET code = @code, name = @name, position = @position, roleId = @roleId, username = @username WHERE code = @code";
+
+            
+            string query = "UPDATE Employee SET code = @code, name = @name, position = @position, roleId = @roleId, username = @username, password = @password WHERE code = @code\r\n";
 
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
@@ -80,7 +82,7 @@ namespace WindowsFormsApp1
 
         private void DeleteEmployeeFromDatabase(string code)
         {
-            string query = "UPDATE Employee SET active = 0 WHERE code = @code";
+            string query = "DELETE FROM Employee WHERE code = @code";
 
             using (SqlConnection connection = new SqlConnection(connectionString.sqlconnection))
             {
@@ -98,7 +100,7 @@ namespace WindowsFormsApp1
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Employee marked as inactive successfully.");
+                            MessageBox.Show("Employee delete successfully.");
                         }
                         else
                         {
@@ -122,9 +124,9 @@ namespace WindowsFormsApp1
             int roleId = int.Parse(txb_roleId.Text.ToString().Trim());
             string username = txb_username.Text;
             string password = txb_password.Text;
+            string hashPassword = PasswordHasher.HashPassword(password);
 
-
-            UpdateEmployeeInDatabase(code, name, position, roleId, username, password);
+            UpdateEmployeeInDatabase(code, name, position, roleId, username, hashPassword);
         }
 
         private void button2_Click(object sender, EventArgs e)

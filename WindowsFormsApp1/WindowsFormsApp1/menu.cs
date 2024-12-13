@@ -27,14 +27,17 @@ namespace WindowsFormsApp1
 
             if (PasswordHasher.roleID == 2)
             {
-
                 button5.Visible = false;
             }
             else if (PasswordHasher.roleID == 3)
             {
                 button5.Visible = false;
                 button2.Visible = false;
-                
+            }
+            else if (PasswordHasher.roleID == 4)
+            {
+                button5.Visible = false;
+                button2.Visible = false;
             }
 
         }
